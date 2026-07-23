@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 140" role="img" aria-label="Honda">
+  <rect width="400" height="140" rx="24" fill="#ffffff"/>
+  <circle cx="200" cy="70" r="42" fill="#f7f7f7" stroke="#0f172a" stroke-width="8"/>
+  <path d="M120 70c20-34 76-48 100-48 22 0 56 10 80 48-20 34-76 48-100 48-22 0-56-10-80-48Z" fill="#e11d48"/>
+  <circle cx="200" cy="70" r="20" fill="#fff"/>
+  <text x="200" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">HONDA</text>
+</svg>

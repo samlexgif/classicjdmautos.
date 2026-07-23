@@ -1,0 +1,30 @@
+{% extends 'uno/base.html' %}
+{% block content %}
+<h1>Inbox</h1>
+<div class="card">
+    {% for inquiry in inquiries %}
+        <div class="card" style="margin-bottom: 0.75rem; border-left: 5px solid {% if inquiry.is_read %}#6c757d{% else %}#0d6efd{% endif %};">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <div>
+                    {% if mode == 'seller' %}
+                        <p style="margin: 0 0 0.25rem 0;"><strong>{{ inquiry.buyer.username }}</strong></p>
+                        <p style="margin: 0 0 0.25rem 0;">{{ inquiry.listing.title }}</p>
+                    {% elif mode == 'buyer' %}
+                        <p style="margin: 0 0 0.25rem 0;"><strong>{{ inquiry.seller.username }}</strong></p>
+                        <p style="margin: 0 0 0.25rem 0;">{{ inquiry.listing.title }}</p>
+                    {% endif %}
+                    <p class="muted" style="margin: 0;">{{ inquiry.created_at }}</p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="margin: 0 0 0.25rem 0;">
+                        {% if not inquiry.is_read %}<strong>Unread</strong>{% else %}Read{% endif %}
+                    </p>
+                    <a href="{% url 'inbox_detail' inquiry.pk %}">Open conversation</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No messages yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'uno/base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm overflow-hidden">
+                <div class="p-4 border-bottom bg-light">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success mb-3" role="status">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                        <div>
+                            <p class="text-uppercase small fw-semibold text-primary mb-1">Vehicle overview</p>
+                            <h1 class="h2 fw-bold mb-1">{{ listing.title }}</h1>
+                            <p class="text-muted mb-0">{{ listing.brand }} {{ listing.model }} • {{ listing.year }} • {{ listing.mileage|intcomma }} km</p>
+                        </div>
+                        <div class="text-md-end">
+                            <p class="text-muted small mb-1">Starting at</p>
+                            <h2 class="h3 fw-bold mb-0">${{ listing.price|floatformat:2|intcomma }}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HERO IMAGE -->
+                <div class="p-4">
+                    {% if listing.image %}
+                        <img id="hero-image" src="{{ listing.image.url }}" alt="{{ listing.title }}" 
+                             class="img-fluid rounded-3 shadow-sm w-100" 
+                             style="height: 360px; object-fit: cover;">
+                    {% elif listing.gallery_images.first %}
+                        <img id="hero-image" src="{{ listing.gallery_images.first.image.url }}" alt="{{ listing.title }}" 
+                             class="img-fluid rounded-3 shadow-sm w-100" 
+                             style="height: 360px; object-fit: cover;">
+                    {% else %}
+                        <div class="alert alert-light border mb-0 text-center py-5">
+                            No image available for this listing yet.
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- GALLERY -->
+                <div class="car-gallery row p-4">
+                    {% if listing.image %}
+                        <div class="col-md-4 mb-3">
+                            <img src="{{ listing.image.url }}" 
+                                 class="img-fluid rounded shadow-sm gallery-thumb" 
+                                 alt="{{ listing.title }}" 
+                                 style="cursor: pointer;">
+                        </div>
+                    {% endif %}
+
+                    {% for img in listing.gallery_images.all %}
+                        <div class="col-md-4 mb-3">
+                            <img src="{{ img.image.url }}" 
+                                 class="img-fluid rounded shadow-sm gallery-thumb" 
+                                 alt="" 
+                                 style="cursor: pointer;">
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="p-4 border-top">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light h-100">
+                                <h3 class="h6 fw-bold mb-3">Vehicle details</h3>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2"><strong>Brand:</strong> {{ listing.brand }}</li>
+                                    <li class="mb-2"><strong>Model:</strong> {{ listing.model }}</li>
+                                    <li class="mb-2"><strong>Year:</strong> {{ listing.year }}</li>
+                                    <li class="mb-2"><strong>Mileage:</strong> {{ listing.mileage|intcomma }} km</li>
+                                    <li class="mb-2"><strong>Location:</strong> {{ listing.location }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-light h-100">
+                                <h3 class="h6 fw-bold mb-3">Description</h3>
+                                <p class="mb-0 text-muted">{{ listing.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT SELLER -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="h4 fw-bold mb-3">Contact Seller</h2>
+                    <p class="text-muted">Ask about this vehicle and request more details.</p>
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'send_inquiry' listing.pk %}">
+                            {% csrf_token %}
+                            {{ inquiry_form.as_p }}
+                            <button type="submit" class="btn btn-primary w-100">Send message</button>
+                        </form>
+                    {% else %}
+                        <p class="mb-0">Please <a href="{% url 'login' %}">log in</a> to contact the seller.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT TO SWAP HERO IMAGE -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const heroImage = document.getElementById("hero-image");
+    const thumbnails = document.querySelectorAll(".gallery-thumb");
+
+    thumbnails.forEach(thumb => {
+        thumb.addEventListener("click", function() {
+            heroImage.src = this.src;
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'uno/base.html' %}
+{% load humanize %}
+{% block content %}
+<section class="overflow-hidden position-relative" style="min-height: 100vh; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: -1rem; margin-bottom: 0; background-image: linear-gradient(90deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.25) 100%), url('/media/cars/hero/Copilot_20260721_095403.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="container h-100 d-flex align-items-center py-5">
+        <div class="col-lg-7 text-white" style="max-width: 620px;">
+            <p class="text-uppercase small fw-semibold mb-3 text-warning">Premium marketplace</p>
+            <h1 class="display-4 fw-bold mb-3">Find your dream car</h1>
+            <p class="lead mb-4 text-white-50">Search for thousands of new and used cars</p>
+            <form class="row g-2 bg-white rounded-pill p-2 shadow" method="get" action="{% url 'listing_list' %}">
+                <div class="col-md-8">
+                    <input type="text" class="form-control border-0 shadow-none" name="q" placeholder="Search by brand, model, or keyword">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-dark w-100 rounded-pill">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 fw-bold mb-0 section-title">Browse by brand</h2>
+    </div>
+    <div class="row g-3">
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100 text-center p-3 section-shell">
+                <a href="/listings/?brand=Toyota" class="text-decoration-none text-dark d-block">
+                    <div class="category-icon d-flex align-items-center justify-content-center">
+                        <img src="/media/brands/toyota.svg" alt="Toyota" style="max-height: 40px; width: auto; object-fit: contain; display: block; margin: 0 auto;">
+                    </div>
+                    <h3 class="h6 fw-semibold mb-1">Toyota</h3>
+                    <p class="text-muted small mb-0">Reliable performance</p>
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100 text-center p-3 section-shell">
+                <a href="/listings/?brand=Honda" class="text-decoration-none text-dark d-block">
+                    <div class="category-icon d-flex align-items-center justify-content-center">
+                        <img src="/media/brands/honda.svg" alt="Honda" style="max-height: 40px; width: auto; object-fit: contain; display: block; margin: 0 auto;">
+                    </div>
+                    <h3 class="h6 fw-semibold mb-1">Honda</h3>
+                    <p class="text-muted small mb-0">Efficient engineering</p>
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100 text-center p-3 section-shell">
+                <a href="/listings/?brand=Nissan" class="text-decoration-none text-dark d-block">
+                    <div class="category-icon d-flex align-items-center justify-content-center">
+                        <img src="/media/brands/nissan.svg" alt="Nissan" style="max-height: 40px; width: auto; object-fit: contain; display: block; margin: 0 auto;">
+                    </div>
+                    <h3 class="h6 fw-semibold mb-1">Nissan</h3>
+                    <p class="text-muted small mb-0">Sporty style</p>
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100 text-center p-3 section-shell">
+                <a href="/listings/?brand=Subaru" class="text-decoration-none text-dark d-block">
+                    <div class="category-icon d-flex align-items-center justify-content-center">
+                        <img src="/media/brands/subaru.svg" alt="Subaru" style="max-height: 40px; width: auto; object-fit: contain; display: block; margin: 0 auto;">
+                    </div>
+                    <h3 class="h6 fw-semibold mb-1">Subaru</h3>
+                    <p class="text-muted small mb-0">Adventure ready</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 fw-bold mb-0 section-title">Featured listings</h2>
+        <a class="btn btn-outline-primary btn-sm" href="{% url 'listing_list' %}">View all</a>
+    </div>
+    <div class="row g-4">
+        {% for listing in listings %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm listing-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge text-bg-primary">{{ listing.brand }}</span>
+                            <span class="text-muted small">{{ listing.year }}</span>
+                        </div>
+                        {% if listing.image %}
+                            <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="img-fluid rounded-3 mb-3" style="height: 180px; width: 100%; object-fit: cover;">
+                        {% else %}
+                            <div class="p-3 rounded-3 mb-3" style="background: linear-gradient(135deg, #eff6ff, #f8fafc); min-height: 180px; display: flex; align-items: center; justify-content: center;">
+                                <span class="text-muted">No image available</span>
+                            </div>
+                        {% endif %}
+                        <div class="p-3 rounded-3 mb-3" style="background: linear-gradient(135deg, #eff6ff, #f8fafc);">
+                            <h3 class="h5 fw-semibold mb-1">{{ listing.title }}</h3>
+                            <p class="text-muted small mb-0">{{ listing.brand }} {{ listing.model }} · {{ listing.mileage }} km</p>
+                        </div>
+                        <p class="fw-bold fs-5 mb-2">${{ listing.price|floatformat:2|intcomma }}</p>
+                        <p class="text-muted mb-3">{{ listing.location }}</p>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <a class="btn btn-outline-primary btn-sm" href="{% url 'listing_detail' listing.pk %}">View details</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-light text-muted border-0 shadow-sm" role="status">No listings yet.</div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

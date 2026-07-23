@@ -1,0 +1,12 @@
+{% extends 'uno/base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Delete Listing</h2>
+    <p>Are you sure you want to delete "{{ listing.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+        <a href="{% url 'seller_dashboard' %}"><button type="button" class="btn-secondary">Cancel</button></a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JDM Autos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+        }
+        body {
+            background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+            min-height: 100vh;
+            font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+            color: #0f172a;
+            height: 100%;              
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: rgba(15, 23, 42, 0.96) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .navbar-brand {
+            letter-spacing: 0.02em;
+            color: #ffffff !important;
+        }
+        .nav-link {
+            font-weight: 500;
+            color: #e2e8f0 !important;
+        }
+        .nav-link:hover {
+            color: #ffffff !important;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #0f172a 0%, #0f3d91 45%, #2563eb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(255,255,255,0.16), transparent 32%);
+            pointer-events: none;
+        }
+        .section-title {
+            letter-spacing: 0.02em;
+        }
+        .section-shell {
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(14px);
+        }
+        .category-icon {
+            width: 54px;
+            height: 54px;
+            line-height: 54px;
+            border-radius: 50%;
+            margin: 0 auto 0.75rem;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            font-size: 1.4rem;
+            box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.08);
+        }
+        .listing-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .listing-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.75rem 1.5rem rgba(15, 23, 42, 0.1) !important;
+        }
+        .soft-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+        .stat-pill {
+            background: rgba(255,255,255,0.11);
+            border: 1px solid rgba(255,255,255,0.16);
+            backdrop-filter: blur(8px);
+        }
+        main {
+           flex: 1;                   
+            }
+        .footer-shell {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.98));
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: auto;
+        }
+        .footer-shell a {
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+        .footer-shell a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="position: relative; z-index: 10;">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4" href="{% url 'home' %}">CLASSIC JDM Autos</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto">
+    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'listing_list' %}">Browse Cars</a></li>
+{% if user.is_authenticated %}
+    {% if user.profile.role == 'buyer' %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'inbox' %}">My Inquiries</a></li>
+    {% elif user.profile.role == 'seller' %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'inbox' %}">Inbox</a></li>
+        {% if user.profile.status == 'approved' %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'seller_dashboard' %}">Dashboard</a></li>
+        {% endif %}
+    {% endif %}
+    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+{% else %}
+    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+{% endif %}
+</ul>
+
+        </div>
+    </div>
+</nav>
+<main>
+<div class="p-0">
+    {% block content %}{% endblock %}
+</div>
+</main>
+<footer class="footer-shell text-white mt-5">
+    <div class="container py-4">
+        <div class="row align-items-center g-3">
+            <div class="col-md-6">
+                <h5 class="fw-semibold mb-1">CLASSIC JDM Autos</h5>
+                <p class="text-light-emphasis mb-0">Drive the dream. Own the moment. Every journey begins with the right car.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="{% url 'home' %}" class="me-3">Home</a>
+                <a href="{% url 'listing_list' %}">Browse Cars</a>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

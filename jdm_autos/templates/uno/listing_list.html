@@ -1,0 +1,71 @@
+{% extends 'uno/base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <p class="text-uppercase small fw-semibold text-primary mb-1">Marketplace</p>
+            <h1 class="h2 fw-bold mb-1">Browse available cars</h1>
+            <p class="text-muted mb-0">Discover premium vehicles from trusted sellers.</p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Keyword</label>
+                    <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Search by keyword">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Brand</label>
+                    <input type="text" class="form-control" name="brand" value="{{ brand }}" placeholder="Brand">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Min price</label>
+                    <input type="number" class="form-control" name="min_price" value="{{ min_price }}" placeholder="Min price">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Max price</label>
+                    <input type="number" class="form-control" name="max_price" value="{{ max_price }}" placeholder="Max price">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Location</label>
+                    <input type="text" class="form-control" name="location" value="{{ location }}" placeholder="Location">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for listing in listings %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    {% if listing.image %}
+                        <img src="{{ listing.image.url }}" alt="{{ listing.title }}" style="height: 220px; width: 100%; object-fit: cover;">
+                    {% else %}
+                        <div style="height: 220px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #eff6ff, #f8fafc); color: #64748b;">No image available</div>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge text-bg-primary">{{ listing.brand }}</span>
+                            <span class="text-muted small">{{ listing.year }}</span>
+                        </div>
+                        <h3 class="h5 fw-semibold mb-2"><a href="{% url 'listing_detail' listing.pk %}" class="text-decoration-none text-dark">{{ listing.title }}</a></h3>
+                        <p class="text-muted small mb-2">{{ listing.brand }} {{ listing.model }}</p>
+                        <p class="fw-bold fs-5 mb-2">${{ listing.price|floatformat:2|intcomma }}</p>
+                        <p class="text-muted mb-0">{{ listing.location }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-light border text-muted" role="status">No cars match your search.</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

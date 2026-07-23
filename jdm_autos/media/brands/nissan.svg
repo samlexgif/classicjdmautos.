@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 140" role="img" aria-label="Nissan">
+  <rect width="400" height="140" rx="24" fill="#ffffff"/>
+  <path d="M200 28c31 0 57 26 57 58 0 32-26 58-57 58-31 0-57-26-57-58 0-32 26-58 57-58Z" fill="#0f172a"/>
+  <path d="M155 52c18-10 40-15 58-15 17 0 36 5 54 15l-14 24c-12-6-24-8-40-8-13 0-27 2-40 8Z" fill="#ffffff"/>
+  <text x="200" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">NISSAN</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 140" role="img" aria-label="Toyota">
+  <rect width="400" height="140" rx="24" fill="#ffffff"/>
+  <circle cx="200" cy="70" r="44" fill="#eb0a1e"/>
+  <path d="M200 30c14 0 27 6 36 16l-18 30c-8-12-19-19-31-19-12 0-23 7-31 19l-18-30c9-10 22-16 36-16Z" fill="#fff"/>
+  <path d="M171 94h58l-13 24h-32Z" fill="#fff"/>
+  <text x="200" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">TOYOTA</text>
+</svg>

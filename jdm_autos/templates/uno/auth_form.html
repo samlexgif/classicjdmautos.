@@ -1,0 +1,31 @@
+{% extends 'uno/base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="p-4 border-bottom bg-light">
+                    <p class="text-uppercase small fw-semibold text-primary mb-2">Account access</p>
+                    <h2 class="h3 fw-bold mb-1">{% if mode == 'signup' %}Create your account{% else %}Welcome back{% endif %}</h2>
+                    <p class="text-muted mb-0">{% if mode == 'signup' %}Join the marketplace and start listing your vehicles.{% else %}Sign in to continue browsing and contacting sellers.{% endif %}</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" class="needs-validation">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary w-100 py-2">{% if mode == 'signup' %}Create account{% else %}Log in{% endif %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

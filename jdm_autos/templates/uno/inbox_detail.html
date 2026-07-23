@@ -1,0 +1,27 @@
+{% extends 'uno/base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Conversation</h2>
+    <p><strong>Listing:</strong> {{ inquiry.listing.title }}</p>
+    <p><strong>Buyer:</strong> {{ inquiry.buyer.username }}</p>
+    <hr>
+    <div class="card" style="background: #f8f9fa;">
+        <p><strong>Buyer message:</strong></p>
+        <p>{{ inquiry.message }}</p>
+    </div>
+
+    {% if inquiry.reply %}
+        <div class="card" style="background: #eef6ff;">
+            <p><strong>Your reply:</strong></p>
+            <p>{{ inquiry.reply }}</p>
+            <p class="muted">Replied at {{ inquiry.replied_at }}</p>
+        </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'reply_inquiry' inquiry.pk %}">
+        {% csrf_token %}
+        <textarea name="reply" rows="4" placeholder="Type your reply"></textarea>
+        <button type="submit">Send reply</button>
+    </form>
+</div>
+{% endblock %}
